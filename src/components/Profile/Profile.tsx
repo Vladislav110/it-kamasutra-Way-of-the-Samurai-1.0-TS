@@ -1,10 +1,9 @@
 import React from "react";
-import s from "./Profile.module.css";
 import MyPosts from "./MyPosts/MyPosts";
 
 const Profile = () => {
     return (
-        <div className='content'>
+        <div>
             <div>
                 <img
                     src="https://c4.wallpaperflare.com/wallpaper/204/759/755/artwork-digital-art-abstract-simple-background-wallpaper-preview.jpg"
