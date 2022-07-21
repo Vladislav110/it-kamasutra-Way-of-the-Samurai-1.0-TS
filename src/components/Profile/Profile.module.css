@@ -1,9 +1,4 @@
 .content {
     grid-area: c;
-    background-color: beige;
-}
-
-.content img {
-    width: 100%;
-    height: 200px;
+    background-color: lightyellow;
 }
