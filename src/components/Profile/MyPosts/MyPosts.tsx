@@ -1,23 +1,39 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import s from "./MyPosts.module.css";
-import Post from "./Post/Post";
+import {Post, PostsPropsType} from "./Post/Post";
 
 
-const MyPosts = () => {
 
-    let posts = [
-        {message: "Hi, how are you?", likesCount: '22'},
-        {message: "It`s my first post", likesCount: '11'},
-        {message: "It`s my second post", likesCount: '12'}
-    ]
-    let postsElements = posts.map( p => <Post message={p.message} likesCount={p.likesCount}/>)
+type ProfilePagePropsType = {
+    posts: Array<PostsPropsType>
+    addPost: ()=>void
+    changeNewPostText: (newPost:string)=>void
+    newPostText:string
+}
+
+export const MyPosts = (props: ProfilePagePropsType) => {
+
+    let postsElements = props.posts.map((p, index) => <Post key={index} message={p.message} likesCount={p.likesCount}/>)
+
+    const addPost = () => {
+        console.log(props.newPostText)
+        props.addPost ()
+    }
+
+    const onPostChange = (event:ChangeEvent<HTMLTextAreaElement>) => {
+        let text = event.currentTarget.value
+        props.changeNewPostText (text)
+        console.log(text)
+    }
 
     return (
         <div className={s.postsBlock}>
-            My posts
+            <h3>My posts</h3>
             <div>
-                <textarea></textarea>
-                <button>Add post</button>
+                <textarea onChange={onPostChange} value = {props.newPostText}/>
+            </div>
+            <div>
+                <button onClick={addPost}>Add post</button>
             </div>
 
             <div className={s.posts}>
@@ -28,4 +44,4 @@ const MyPosts = () => {
     )
 }
 
-export default MyPosts;
+

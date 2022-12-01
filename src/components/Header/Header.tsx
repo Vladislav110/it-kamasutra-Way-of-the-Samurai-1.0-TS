@@ -2,10 +2,6 @@ import React from "react";
 import s from "./Header.module.css";
 
 
-// type HeaderType = {
-//   Header: string
-// }
-
 export const Header = () => {
     return (
         <header className={s.header}>

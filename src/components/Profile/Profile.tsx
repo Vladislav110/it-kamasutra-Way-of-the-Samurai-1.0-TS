@@ -1,24 +1,46 @@
 import React from "react";
 import s from "./Profile.module.css";
-import MyPosts from "./MyPosts/MyPosts";
+import {MyPosts} from "./MyPosts/MyPosts";
+import {ProfileInfo} from "./ProfileInfo/RrofileInfo";
 
-const Profile = () => {
+
+type ProfilePagePropsType = {
+    posts: Array<{id:string, message: string, likesCount: number }>
+    addPost: ()=>void
+    changeNewPostText: (newPost:string)=>void
+    newPostText:string
+}
+
+export const Profile = (props:ProfilePagePropsType) => {
+
     return (
-        <div className={s.content}>
-            <div>
-                <img
-                    src="https://c4.wallpaperflare.com/wallpaper/204/759/755/artwork-digital-art-abstract-simple-background-wallpaper-preview.jpg"
-                    alt=""/>
+        <div>
+            <div className={s.content}>
+                <ProfileInfo/>
             </div>
             <div>
-                <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0OlkFY_KPKAJhAJ38aFS5k2LlXBKu1t7t5h2T0_78RSogSljdFjbOv6m_Xg46C1BPoDk&usqp=CAU"
-                    alt=""/>
+                <MyPosts posts={props.posts} addPost={props.addPost}  changeNewPostText ={props.changeNewPostText}  newPostText ={ props.newPostText}/>
             </div>
-
-            <MyPosts />
         </div>
     )
 }
 
-export default Profile;
+
+// posts={props.state.posts}
+//                 dispatch={store.dispatch}
+//                 newPostText={props.state.newPostText}
+//                 addPostActionCreator={addPostActionCreator}
+//                 updateNewPostText ={updateNewPostText}
+
+
+// type ProfilePagePropsType = {
+//     posts: Array<{ message: string, likesCount: number }>
+//     newPostText: string
+// }
+//
+// type StatePropsType = {
+//     state: ProfilePagePropsType
+//     dispatch: (action: any) => void
+//     addPostActionCreator: ()=>void
+//     updateNewPostText: (text:string | undefined)=>void
+// }
