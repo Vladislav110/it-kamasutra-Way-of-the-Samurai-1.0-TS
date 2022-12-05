@@ -2,16 +2,19 @@ import React from "react";
 import s from "./Profile.module.css";
 import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./ProfileInfo/RrofileInfo";
+import {ActionsType} from "../../redux/state";
 
-
-type ProfilePagePropsType = {
-    posts: Array<{id:string, message: string, likesCount: number }>
-    addPost: ()=>void
-    changeNewPostText: (newPost:string)=>void
-    newPostText:string
+type ProfileType = {
+    posts: Array<{ id: string, message: string, likesCount: number }>
+    newPostText: string
 }
 
-export const Profile = (props:ProfilePagePropsType) => {
+type ProfilePagePropsType = {
+    profilePage: ProfileType
+    dispatch: (action: ActionsType) => void
+}
+
+export const Profile = (props: ProfilePagePropsType) => {
 
     return (
         <div>
@@ -19,28 +22,10 @@ export const Profile = (props:ProfilePagePropsType) => {
                 <ProfileInfo/>
             </div>
             <div>
-                <MyPosts posts={props.posts} addPost={props.addPost}  changeNewPostText ={props.changeNewPostText}  newPostText ={ props.newPostText}/>
+                <MyPosts posts={props.profilePage.posts}
+                         dispatch={props.dispatch}
+                         newPostText={props.profilePage.newPostText}/>
             </div>
         </div>
     )
 }
-
-
-// posts={props.state.posts}
-//                 dispatch={store.dispatch}
-//                 newPostText={props.state.newPostText}
-//                 addPostActionCreator={addPostActionCreator}
-//                 updateNewPostText ={updateNewPostText}
-
-
-// type ProfilePagePropsType = {
-//     posts: Array<{ message: string, likesCount: number }>
-//     newPostText: string
-// }
-//
-// type StatePropsType = {
-//     state: ProfilePagePropsType
-//     dispatch: (action: any) => void
-//     addPostActionCreator: ()=>void
-//     updateNewPostText: (text:string | undefined)=>void
-// }
