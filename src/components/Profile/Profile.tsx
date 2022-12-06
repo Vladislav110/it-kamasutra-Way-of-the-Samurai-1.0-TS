@@ -8,7 +8,6 @@ type ProfileType = {
     posts: Array<{ id: string, message: string, likesCount: number }>
     newPostText: string
 }
-
 type ProfilePagePropsType = {
     profilePage: ProfileType
     dispatch: (action: ActionsType) => void

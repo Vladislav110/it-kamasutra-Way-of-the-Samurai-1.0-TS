@@ -2,6 +2,7 @@ import React, {ChangeEvent} from "react";
 import s from "./MyPosts.module.css";
 import {Post, PostsPropsType} from "./Post/Post";
 import {ActionsType} from "../../../redux/state";
+import {addPostActionCreator, changeNewPostTextActionCreator} from "../../../redux/profile_reducer";
 
 
 type ProfilePagePropsType = {
@@ -10,17 +11,19 @@ type ProfilePagePropsType = {
     newPostText: string
 }
 
+
+
 export const MyPosts = (props: ProfilePagePropsType) => {
 
     let postsElements = props.posts.map((p, index) => <Post key={index} message={p.message} likesCount={p.likesCount}/>)
 
     const addPost = () => {
-        props.dispatch({type: "ADD-POST", newPostText: props.newPostText})
+        props.dispatch(addPostActionCreator(props.newPostText));
     }
 
     const onPostChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         let text = event.currentTarget.value
-        props.dispatch({type: "CHANGE-NEW-POST-TEXT", newPost: text})
+        props.dispatch(changeNewPostTextActionCreator(text))
     }
 
     return (

@@ -8,19 +8,20 @@ import {Route} from "react-router-dom";
 import {StorePropsType} from "./redux/state";
 
 
-type StateType = {
+type StoreType = {
     store: StorePropsType
 }
 
-const App: React.FC<StateType> = (props) => {
+const App: React.FC<StoreType> = (props) => {
     const state = props.store.getState()
     return (
         <div className='app-wrapper'>
             <Header/>
             <Navbar/>
             <div className='app-wrapper-content'>
-                <Route path='/Dialogs' render={() => <Dialogs dialogs={state.dialogsPage.dialogs}
-                                                              messages={state.dialogsPage.messages}/>}/>
+                <Route path='/Dialogs' render={() => <Dialogs dialogs={state.dialogsPage}
+                                                              dispatch={props.store.dispatch.bind(props.store)}
+                />}/>
                 <Route path='/Profile' render={() => <Profile profilePage={state.profilePage}
                                                               dispatch={props.store.dispatch.bind(props.store)}
                 />}/>
