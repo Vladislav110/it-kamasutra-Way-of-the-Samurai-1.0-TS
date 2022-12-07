@@ -39,12 +39,12 @@ export type ActionsType =
 export type StorePropsType = {
     _state: StatePropsType
     getState: () => StatePropsType
-    subscriber: (observer: () => void) => void
+    subscribe: (observer: () => void) => void
     _callSubscriber: () => void
     dispatch: (action: ActionsType) => void
 }
 
-export let store: StorePropsType = {
+let store: StorePropsType = {
     _state: {
         profilePage: {
             posts: [
@@ -80,7 +80,7 @@ export let store: StorePropsType = {
     getState() {
         return store._state
     },
-    subscriber(observer) {
+    subscribe(observer) {
         this._callSubscriber = observer
     },
     _callSubscriber() {

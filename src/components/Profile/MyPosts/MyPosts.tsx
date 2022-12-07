@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from "react";
 import s from "./MyPosts.module.css";
 import {Post, PostsPropsType} from "./Post/Post";
-import {ActionsType} from "../../../redux/state";
+import {ActionsType} from "../../../redux/store";
 import {addPostActionCreator, changeNewPostTextActionCreator} from "../../../redux/profile_reducer";
 
 
@@ -22,6 +22,7 @@ export const MyPosts = (props: ProfilePagePropsType) => {
     }
 
     const onPostChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        console.log('l',event.currentTarget.value )
         let text = event.currentTarget.value
         props.dispatch(changeNewPostTextActionCreator(text))
     }

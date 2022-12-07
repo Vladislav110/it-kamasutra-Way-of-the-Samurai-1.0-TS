@@ -2,7 +2,7 @@ import React from "react";
 import s from "./Profile.module.css";
 import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./ProfileInfo/RrofileInfo";
-import {ActionsType} from "../../redux/state";
+import {ActionsType} from "../../redux/store";
 
 type ProfileType = {
     posts: Array<{ id: string, message: string, likesCount: number }>
