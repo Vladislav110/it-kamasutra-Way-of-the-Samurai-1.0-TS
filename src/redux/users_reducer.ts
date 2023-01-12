@@ -1,5 +1,4 @@
 
-
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const SET_USERS = "SET-USERS";
@@ -16,24 +15,10 @@ type ActionsType =
     | ReturnType<typeof setTotalUsersCountActionCreator>
     | ReturnType<typeof setIsFetchingActionCreator>
 
-// type LocationPropsType = {
-//     city: string
-//     country: string
-// }
-// export type UserPropsType = {
-//     id: string
-//     photos: string,
-//     followed: boolean
-//     name: string
-//     status: string
-//     location: LocationPropsType
-// };
-
 type PhotosType ={
     small: string
     large:string
 }
-
 export type UserPropsType = {
     name: string
     id: string
@@ -41,7 +26,6 @@ export type UserPropsType = {
     status:string
     followed:boolean
 }
-
 
 export type InitialStateType = typeof initialState
 

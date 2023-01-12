@@ -6,7 +6,7 @@ import {
     unfollowActionCreator, UserPropsType
 } from "../../redux/users_reducer";
 import {AppStateType} from "../../redux/redux_store";
-import {compose, Dispatch} from "redux";
+import {compose} from "redux";
 import axios from "axios";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
@@ -26,7 +26,7 @@ export type MapDispatchToPropsType = {
     setUsers: (users: Array<UserPropsType>) => void
     setCurrentPage: (currentPage: number) => void
     setTotalUsersCount: (setTotalUsersCount: number) => void
-    setIsFetching:(isFetching:boolean)=>void
+    setIsFetching: (isFetching: boolean) => void
 }
 
 export class UsersContainer extends React.Component<MapDispatchToPropsType & MapStatePropsType> {
@@ -75,30 +75,36 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 
-let mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-    return {
-        followSubscriber: (userID: string) => {
-            dispatch(followActionCreator(userID))
-        },
-        unfollowSubscriber: (userID: string) => {
-            dispatch(unfollowActionCreator(userID))
-        },
-        setUsers: (users: Array<UserPropsType>) => {
-            dispatch(setUsersActionCreator(users))
-        },
-        setCurrentPage: (currentPage: number) => {
-            dispatch(setCurrentPageActionCreator(currentPage))
-        },
-        setTotalUsersCount: (totalCount: number) => {
-            dispatch(setTotalUsersCountActionCreator(totalCount))
-        },
-        setIsFetching: (isFetching: boolean) => {
-            dispatch(setIsFetchingActionCreator(isFetching))
-        }
-    }
-}
+// let mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
+//     return {
+//         followSubscriber: (userID: string) => {
+//             dispatch(followActionCreator(userID))
+//         },
+//         unfollowSubscriber: (userID: string) => {
+//             dispatch(unfollowActionCreator(userID))
+//         },
+//         setUsers: (users: Array<UserPropsType>) => {
+//             dispatch(setUsersActionCreator(users))
+//         },
+//         setCurrentPage: (currentPage: number) => {
+//             dispatch(setCurrentPageActionCreator(currentPage))
+//         },
+//         setTotalUsersCount: (totalCount: number) => {
+//             dispatch(setTotalUsersCountActionCreator(totalCount))
+//         },
+//         setIsFetching: (isFetching: boolean) => {
+//             dispatch(setIsFetchingActionCreator(isFetching))
+//         }
+//     }
+// }
 
-const UserContainer = compose<FC>(connect(mapStateToProps, mapDispatchToProps))(UsersContainer)
+const UserContainer = compose<FC>(connect(mapStateToProps, {
+    followSubscriber: followActionCreator,
+    unfollowSubscriber: unfollowActionCreator,
+    setUsers: setUsersActionCreator,
+    setCurrentPage: setCurrentPageActionCreator,
+    setTotalUsersCount: setTotalUsersCountActionCreator,
+    setIsFetching: setIsFetchingActionCreator
+}))(UsersContainer)
 
 export default UserContainer
-
