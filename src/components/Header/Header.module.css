@@ -6,5 +6,15 @@
 .header img {
     width: 70px;
     height: 70px;
+}
 
+.loginBlock {
+    display: flex;
+    float: right;
+}
+
+.loginBlock a {
+    color: darkmagenta;
+    margin-top: 15px;
+    margin-right: 50px;
 }

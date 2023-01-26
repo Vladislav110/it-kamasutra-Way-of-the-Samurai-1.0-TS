@@ -1,30 +1,36 @@
 import React from "react";
 import styles from "./Users.module.css";
 import userImage from "../../assets/images/userImage.png";
-import {UserPropsType} from "../../redux/users_reducer";
+import { UserPropsType} from "../../redux/users_reducer";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 
 type UsersPropsType = {
     totalUsersCount: number
-    pageSize:number
-    currentPage:number
+    pageSize: number
+    currentPage: number
     followSubscriber: (userID: string) => void
     unfollowSubscriber: (userID: string) => void
-    onPageChanged:(pageNumber: number)=>void
+    onPageChanged: (pageNumber: number) => void
     users: Array<UserPropsType>
+    setIsFollowingProgress: (followingInProgress:boolean)=>void
+    followingInProgress:boolean
 }
 
-export const Users = (props:UsersPropsType) => {
+export const Users = (props: UsersPropsType) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i)
     }
+
     return <div>
         <div>
-            {pages.map(el => {
-                return <span className={props.currentPage === el ? styles.selectedPage : " "} onClick={(e)=>{props.onPageChanged(el)}}>{el}</span>
+            {pages.map((el, index)=> {
+                return <span key={index} className={props.currentPage === el ? styles.selectedPage : " "} onClick={(e) => {
+                    props.onPageChanged(el)
+                }}>{el}</span>
             })}
         </div>
 
@@ -37,11 +43,37 @@ export const Users = (props:UsersPropsType) => {
                             </NavLink>
                     </div>
                     <div>
-                        {el.followed ? <button onClick={() => {
-                            props.unfollowSubscriber(el.id);
-                        }}>Unfollow</button> : <button onClick={() => {
-                            props.followSubscriber(el.id);
-                        }}>Follow</button>}
+                        {el.followed
+                            ? <button disabled={props.followingInProgress} onClick={() => {
+                                props.setIsFollowingProgress(true)
+                                axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${el.id}`, {
+                                    withCredentials: true,
+                                    headers: {
+                                        "API-KEY": "401e95f2-35f8-4d3a-84f7-69ba825792b8"
+                                    }
+                                })
+                                    .then(response => {
+                                        if (response.data.resultCode == 0) {
+                                            props.unfollowSubscriber(el.id)
+                                        }
+                                        props.setIsFollowingProgress(false)
+                                    })
+                            }}>Unfollow</button>
+                            : <button disabled={props.followingInProgress} onClick={() => {
+                                props.setIsFollowingProgress(true)
+                                axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${el.id}`, {}, {
+                                    withCredentials: true,
+                                    headers: {
+                                        "API-KEY": "401e95f2-35f8-4d3a-84f7-69ba825792b8"
+                                    }
+                                })
+                                    .then(response => {
+                                        if (response.data.resultCode == 0) {
+                                            props.followSubscriber(el.id)
+                                        }
+                                        props.setIsFollowingProgress(false)
+                                    })
+                            }}>Follow</button>}
                     </div>
                 </span>
             <span>

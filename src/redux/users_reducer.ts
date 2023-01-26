@@ -5,6 +5,7 @@ const SET_USERS = "SET-USERS";
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT"
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
+const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS"
 
 
 type ActionsType =
@@ -14,6 +15,7 @@ type ActionsType =
     | ReturnType<typeof setCurrentPageActionCreator>
     | ReturnType<typeof setTotalUsersCountActionCreator>
     | ReturnType<typeof setIsFetchingActionCreator>
+    | ReturnType<typeof setIsFollowingProgressActionCreator>
 
 type PhotosType ={
     small: string
@@ -27,6 +29,7 @@ export type UserPropsType = {
     followed:boolean
 }
 
+
 export type InitialStateType = typeof initialState
 
 let initialState = {
@@ -34,7 +37,8 @@ let initialState = {
     pageSize:20,
     totalUsersCount:0,
     currentPage:1,
-    isFetching: false
+    isFetching: true,
+    followingInProgress: false
 }
 console.log("users", initialState)
 
@@ -53,11 +57,13 @@ export const usersReducer = (state: InitialStateType = initialState, action: Act
             return {...state, totalUsersCount:action.totalUsersCount}
         case TOGGLE_IS_FETCHING:
             return {...state, isFetching:action.isFetching}
+        case TOGGLE_IS_FOLLOWING_PROGRESS:
+            return {...state, followingInProgress: action.followingInProgress}
+
         default:
             return state
     }
 }
-
 
 export const followActionCreator = (userID: string) => {
     return {
@@ -97,6 +103,13 @@ export const setIsFetchingActionCreator = (isFetching: boolean) => {
     return {
         type: TOGGLE_IS_FETCHING,
         isFetching: isFetching
+    } as const
+}
+
+export const setIsFollowingProgressActionCreator = (followingInProgress:boolean) => {
+    return {
+        type: TOGGLE_IS_FOLLOWING_PROGRESS,
+        followingInProgress:followingInProgress
     } as const
 }
 

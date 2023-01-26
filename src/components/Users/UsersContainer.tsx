@@ -1,15 +1,20 @@
 import React, {FC} from "react";
 import {connect} from "react-redux";
 import {
-    followActionCreator, setCurrentPageActionCreator, setIsFetchingActionCreator, setTotalUsersCountActionCreator,
+    followActionCreator,
+    setCurrentPageActionCreator,
+    setIsFetchingActionCreator,
+    setIsFollowingProgressActionCreator,
+    setTotalUsersCountActionCreator,
     setUsersActionCreator,
-    unfollowActionCreator, UserPropsType
+    unfollowActionCreator,
+    UserPropsType
 } from "../../redux/users_reducer";
 import {AppStateType} from "../../redux/redux_store";
 import {compose} from "redux";
-import axios from "axios";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
+import {getUsers} from "../../api/api";
 
 
 export type MapStatePropsType = {
@@ -18,6 +23,7 @@ export type MapStatePropsType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: boolean
 }
 
 export type MapDispatchToPropsType = {
@@ -27,30 +33,37 @@ export type MapDispatchToPropsType = {
     setCurrentPage: (currentPage: number) => void
     setTotalUsersCount: (setTotalUsersCount: number) => void
     setIsFetching: (isFetching: boolean) => void
+    setIsFollowingProgress: (followingInProgress: boolean) => void
 }
 
-export class UsersContainer extends React.Component<MapDispatchToPropsType & MapStatePropsType> {
+type GetUsersPropsType = {
+    currentPage: number,
+    pageSize: number
+}
+
+export class UsersContainer extends React.Component<MapDispatchToPropsType & MapStatePropsType & GetUsersPropsType> {
 
     componentDidMount() {
-        this.props.setIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}& count=${this.props.pageSize}`).then(response => {
-            this.props.setIsFetching(false)
-            this.props.setUsers(response.data.items)
-            this.props.setTotalUsersCount(response.data.totalCount)
-        })
+        this.props.setIsFetching(true);
+
+        getUsers(this.props.currentPage, this.props.pageSize)
+            .then(data => {
+                this.props.setIsFetching(false)
+                this.props.setUsers(data.items)
+                this.props.setTotalUsersCount(data.totalCount)
+            })
     }
 
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber)
         this.props.setIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}& count=${this.props.pageSize}`).then(response => {
+        getUsers(pageNumber, this.props.pageSize).then(data => {
             this.props.setIsFetching(false)
-            this.props.setUsers(response.data.items)
+            this.props.setUsers(data.items)
         })
     }
 
     render() {
-
 
         return <>
             {this.props.isFetching ? <Preloader/> : null}
@@ -60,7 +73,12 @@ export class UsersContainer extends React.Component<MapDispatchToPropsType & Map
                    followSubscriber={this.props.followSubscriber}
                    unfollowSubscriber={this.props.unfollowSubscriber}
                    onPageChanged={this.onPageChanged}
-                   users={this.props.users}/>
+                   users={this.props.users}
+                   setIsFollowingProgress = {this.props.setIsFollowingProgress}
+                   followingInProgress ={this.props.followingInProgress}
+
+
+            />
         </>
     }
 }
@@ -71,7 +89,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress
     }
 }
 
@@ -104,7 +123,8 @@ const UserContainer = compose<FC>(connect(mapStateToProps, {
     setUsers: setUsersActionCreator,
     setCurrentPage: setCurrentPageActionCreator,
     setTotalUsersCount: setTotalUsersCountActionCreator,
-    setIsFetching: setIsFetchingActionCreator
+    setIsFetching: setIsFetchingActionCreator,
+    setIsFollowingProgress: setIsFollowingProgressActionCreator
 }))(UsersContainer)
 
 export default UserContainer
