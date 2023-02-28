@@ -25,3 +25,14 @@ export const unfollow = (userID: string) => {
         }
     })
 }
+
+export const getProfile = (userID:string)=>{
+    return  axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID)
+}
+
+
+export const getAuth =()=> {
+    return axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
+        withCredentials: true
+    })
+}

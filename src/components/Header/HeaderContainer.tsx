@@ -1,10 +1,10 @@
 import React, {FC} from "react";
 import {Header} from "./Header";
-import axios from "axios";
 import {connect} from "react-redux";
-import {InitialStateType, setUserDataActionCreator} from "../../redux/auth_reducer";
+import {InitialStateType, setAuthThunkCreator, setUserDataActionCreator} from "../../redux/auth_reducer";
 import {AppStateType} from "../../redux/redux_store";
 import {compose} from "redux";
+
 
 export type MapStatePropsType = {
     login: string,
@@ -13,19 +13,13 @@ export type MapStatePropsType = {
 
 export type MapDispatchToPropsType = {
     setUserDataActionCreator: (data:InitialStateType) => void
+    setAuthThunkCreator: ()=>void
 }
 
 class HeaderContainer extends React.Component<MapDispatchToPropsType & MapStatePropsType> {
 
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-            withCredentials: true
-        })
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    this.props.setUserDataActionCreator(response.data.data)
-                }
-            })
+       this.props.setAuthThunkCreator()
     }
 
     render() {
@@ -41,4 +35,4 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 
-export default compose<FC>(connect(mapStateToProps, {setUserDataActionCreator}))(HeaderContainer)
+export default compose<FC>(connect(mapStateToProps, {setUserDataActionCreator,setAuthThunkCreator}))(HeaderContainer)

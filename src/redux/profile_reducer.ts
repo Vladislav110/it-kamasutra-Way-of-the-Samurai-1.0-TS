@@ -1,4 +1,7 @@
 import {v1} from "uuid";
+import {Dispatch} from "redux";
+import {getProfile} from "../api/api";
+
 
 
 const CHANGE_NEW_POST_TEXT = "CHANGE-NEW-POST-TEXT";
@@ -89,3 +92,11 @@ export const setUserProfile = (profile: ProfilePropsType) => {
         profile: profile
     } as const
 }
+
+
+export const getProfileThunkCreator = (userID: string) => {
+    return (dispatch: Dispatch<any>) => {
+        getProfile(userID).then(response => {
+            dispatch(setUserProfile(response.data))
+        })
+}}

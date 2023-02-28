@@ -3,6 +3,7 @@ import s from "./Profile.module.css";
 import {ProfileInfo} from "./ProfileInfo/RrofileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import {ProfilePropsType} from "../../redux/profile_reducer";
+import {Redirect} from "react-router-dom";
 
 
 
