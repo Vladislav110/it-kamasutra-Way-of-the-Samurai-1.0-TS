@@ -3,12 +3,15 @@ import axios from "axios";
 
 export const getUsers = (currentPage: number, pageSize: number) => {
     return axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}& count=${pageSize}`, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+            "API-KEY": "401e95f2-35f8-4d3a-84f7-69ba825792b8"
+        }
     })
         .then(response => response.data)
 }
 
-export const follow = (userID: string) => {
+export const unfollow = (userID: string) => {
     return axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`, {
         withCredentials: true,
         headers: {
@@ -17,7 +20,7 @@ export const follow = (userID: string) => {
     })
 }
 
-export const unfollow = (userID: string) => {
+export const follow = (userID: string) => {
     return axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`, {}, {
         withCredentials: true,
         headers: {
@@ -26,13 +29,34 @@ export const unfollow = (userID: string) => {
     })
 }
 
-export const getProfile = (userID:string)=>{
-    return  axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID)
+export const getProfile = (userID: string) => {
+    return axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID, {
+        withCredentials: true,
+        headers: {
+            "API-KEY": "401e95f2-35f8-4d3a-84f7-69ba825792b8"
+        }
+    })
+}
+
+export const getStatus = (userID: string) => {
+    return axios.get(`https://social-network.samuraijs.com/api/1.0//profile/status/${userID}`, {
+        withCredentials: true,
+        headers: {
+            "API-KEY": "401e95f2-35f8-4d3a-84f7-69ba825792b8"
+        }
+    })
+}
+
+export const updateStatus = (status: string) => {
+    return axios.put(`https://social-network.samuraijs.com/api/1.0/profile/status`, {status: status}, {
+        withCredentials: true,
+    })
 }
 
 
-export const getAuth =()=> {
+export const getAuth = () => {
     return axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
         withCredentials: true
     })
 }
+

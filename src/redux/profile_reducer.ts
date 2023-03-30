@@ -1,17 +1,20 @@
 import {v1} from "uuid";
 import {Dispatch} from "redux";
-import {getProfile} from "../api/api";
-
+import {getProfile, getStatus, updateStatus} from "../api/api";
 
 
 const CHANGE_NEW_POST_TEXT = "CHANGE-NEW-POST-TEXT";
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
+const SET_STATUS = "SET_STATUS";
+
 
 type ActionsType =
     ReturnType<typeof addPostActionCreator>
     | ReturnType<typeof changeNewPostTextActionCreator>
     | ReturnType<typeof setUserProfile>
+    | ReturnType<typeof setStatusActionCreator>
+
 
 type PhotosType = {
     small: string
@@ -51,7 +54,8 @@ let initialState = {
         {id: v1(), message: "It`s my second post", likesCount: 12}
     ] as Array<PostsPropsType>,
     newPostText: "",
-    profile: { } as ProfilePropsType
+    profile: {} as ProfilePropsType,
+    status: "" as string
 }
 
 
@@ -67,6 +71,8 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             return {...state}
         case SET_USER_PROFILE :
             return {...state, profile: action.profile}
+        case SET_STATUS:
+            return {...state, status: action.status}
         default:
             return state
     }
@@ -93,10 +99,36 @@ export const setUserProfile = (profile: ProfilePropsType) => {
     } as const
 }
 
+export const setStatusActionCreator = (status: string) => {
+    return {
+        type: SET_STATUS,
+        status: status
+    } as const
+}
+
 
 export const getProfileThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         getProfile(userID).then(response => {
             dispatch(setUserProfile(response.data))
         })
-}}
+    }
+}
+
+export const getStatusThunkCreator = (userID: string) => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        getStatus(userID).then(response => {
+            dispatch(setStatusActionCreator(response.data))
+        })
+    }
+}
+
+export const updateStatusThunkCreator = (status: string) => {
+    return (dispatch: Dispatch<ActionsType>) => {
+        updateStatus(status).then(response => {
+            if (response.data.resultCode === 0){
+                dispatch(setStatusActionCreator(status))
+            }
+        })
+    }
+}

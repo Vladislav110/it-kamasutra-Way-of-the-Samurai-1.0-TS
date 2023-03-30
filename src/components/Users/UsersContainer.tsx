@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {connect} from "react-redux";
 import {
     followThunkCreator, getUsersThunkCreator,
-    setCurrentPageActionCreator,
+    setCurrentPageActionCreator, setIsFollowingProgressActionCreator,
     unfollowThunkCreator,
     UserPropsType
 } from "../../redux/users_reducer";
@@ -10,6 +10,7 @@ import {AppStateType} from "../../redux/redux_store";
 import {compose} from "redux";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 
 export type MapStatePropsType = {
@@ -74,11 +75,14 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 
-const UserContainer = compose<FC>(connect(mapStateToProps, {
+const UserContainer = compose<FC>(
+    withAuthRedirect,
+    connect(mapStateToProps, {
     setCurrentPage: setCurrentPageActionCreator,
     getUsersThunk: getUsersThunkCreator,
     follow: followThunkCreator,
-    unfollow: unfollowThunkCreator
+    unfollow: unfollowThunkCreator,
+    followingInProgress:setIsFollowingProgressActionCreator
 }))(UsersContainer)
 
 export default UserContainer

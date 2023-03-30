@@ -22,11 +22,13 @@ export const Users = (props: UsersPropsType) => {
         pages.push(i)
     }
 
+
+
     return <div>
         <div>
             {pages.map((el, index) => {
-                return <span key={index} className={props.currentPage === el ? styles.selectedPage : " "}
-                             onClick={(e) => {
+                return <span key={index} className={props.currentPage === el ? styles.selectedPage : ""}
+                             onClick={() => {
                                  props.onPageChanged(el)
                              }}>{el}</span>
             })}
@@ -42,8 +44,9 @@ export const Users = (props: UsersPropsType) => {
                     </div>
                     <div>
                         {el.followed
-                            ? <button disabled={props.followingInProgress} onClick={() => {props.unfollow(el.id)}}>Unfollow</button>
-                            : <button disabled={props.followingInProgress} onClick={() => {props.follow(el.id)}}>Follow</button>}
+                            ? <button disabled={!props.followingInProgress} onClick={() => {props.unfollow(el.id)}}>Unfollow</button>
+                            : <button disabled={!props.followingInProgress} onClick={() => {props.follow(el.id)}}>Follow</button>}
+
                     </div>
                 </span>
             <span>

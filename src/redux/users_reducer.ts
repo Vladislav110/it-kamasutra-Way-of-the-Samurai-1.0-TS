@@ -112,7 +112,7 @@ export const setIsFollowingProgressActionCreator = (followingInProgress: boolean
 
 
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         dispatch(setIsFetchingActionCreator(true));
 
         getUsers(currentPage, pageSize)
@@ -125,7 +125,7 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
 }
 
 export const followThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         dispatch(setIsFollowingProgressActionCreator(true))
         follow(userID)
             .then(response => {
@@ -136,9 +136,8 @@ export const followThunkCreator = (userID: string) => {
             })
     }
 }
-
 export const unfollowThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch<ActionsType>) => {
         dispatch(setIsFollowingProgressActionCreator(true))
         unfollow(userID)
             .then(response => {
