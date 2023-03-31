@@ -59,5 +59,5 @@ export default compose<React.FC>(
         updateStatus: updateStatusThunkCreator
     }),
     withRouter,
-    // withAuthRedirect
+    withAuthRedirect
 )(ProfileContainer)

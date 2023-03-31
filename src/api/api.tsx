@@ -50,6 +50,9 @@ export const getStatus = (userID: string) => {
 export const updateStatus = (status: string) => {
     return axios.put(`https://social-network.samuraijs.com/api/1.0/profile/status`, {status: status}, {
         withCredentials: true,
+        headers: {
+            "API-KEY": "401e95f2-35f8-4d3a-84f7-69ba825792b8"
+        }
     })
 }
 
