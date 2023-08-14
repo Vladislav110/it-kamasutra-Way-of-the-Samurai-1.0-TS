@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {addPostActionCreator, changeNewPostTextActionCreator, profileReducer} from "./profile_reducer";
-import {dialogsReducer, sendMessageCreator, updateNewMessageBodyCreator} from "./dialogs_reducer";
+import {addPostActionCreator} from "./profile_reducer";
+import {dialogsReducer, sendMessageCreator} from "./dialogs_reducer";
 
 type DialogPropsType = {
     id: string
@@ -22,7 +22,6 @@ export type ProfilePagePropsType = {
 export type DialogPagePropsType = {
     dialogs: Array<DialogPropsType>
     messages: Array<MessagePagePropsType>
-    newMessageBody: string
 };
 export type StatePropsType = {
     profilePage: ProfilePagePropsType
@@ -31,8 +30,6 @@ export type StatePropsType = {
 
 export type ActionsType =
     ReturnType<typeof addPostActionCreator>
-    | ReturnType<typeof changeNewPostTextActionCreator>
-    | ReturnType<typeof updateNewMessageBodyCreator>
     | ReturnType<typeof sendMessageCreator>;
 
 
@@ -72,8 +69,7 @@ let store: StorePropsType = {
                 {id: v1(), message: 'How do you feel?'},
                 {id: v1(), message: 'How are you?'},
                 {id: v1(), message: 'Yo'}
-            ],
-            newMessageBody: ""
+            ]
         }
     },
 

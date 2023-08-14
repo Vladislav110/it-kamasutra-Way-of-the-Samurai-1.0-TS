@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/redux_store";
@@ -30,19 +30,36 @@ type PathParamType = {
 
 type CommonPropsType = RouteComponentProps<PathParamType> & OwnPropsType
 
-function ProfileContainer(props: CommonPropsType) {
+// function ProfileContainer(props: CommonPropsType) {
+//
+//     let userId = props.match.params.userId
+//     if (!userId) {
+//         userId = "27097"
+//     }
+//     props.getUserProfile(userId)
+//     props.getStatus(userId)
+//
+//     return (
+//         <Profile profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
+//     )
+// }
 
-    let userId = props.match.params.userId
+function ProfileContainer(props: CommonPropsType) {
+    let userId = props.match.params.userId;
     if (!userId) {
-        userId = "27097"
+        userId = "27097";
     }
-    props.getUserProfile(userId)
-    props.getStatus(userId)
+
+    useEffect(() => {
+        props.getUserProfile(userId);
+        props.getStatus(userId);
+    }, [props.getUserProfile, props.getStatus, userId]);
 
     return (
         <Profile profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
-    )
+    );
 }
+
 
 
 let mapStateToProps = (state: AppStateType): MapStatePropsType => {
