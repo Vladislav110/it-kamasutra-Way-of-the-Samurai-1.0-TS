@@ -1,4 +1,6 @@
 import axios from "axios";
+import {InitialStateType} from "../redux/auth_reducer";
+import {FormDataType} from "../components/Login/Login";
 
 
 export const getUsers = (currentPage: number, pageSize: number) => {
@@ -62,4 +64,20 @@ export const getAuth = () => {
         withCredentials: true
     })
 }
+
+export const loginUser = (data:FormDataType) => {
+    return axios.post(`https://social-network.samuraijs.com/api/1.0/auth/login`, data, {
+        withCredentials: true
+    })
+}
+
+
+export const logoutUser = () => {
+    return axios.delete(`https://social-network.samuraijs.com/api/1.0/auth/login`,{
+        withCredentials: true
+    })
+}
+
+
+
 
