@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {Header} from "./Header";
 import {connect} from "react-redux";
-import {InitialStateType, setAuthThunkCreator, setUserDataActionCreator} from "../../redux/auth_reducer";
+import {logout} from "../../redux/auth_reducer";
 import {AppStateType} from "../../redux/redux_store";
 import {compose} from "redux";
 
@@ -11,16 +11,9 @@ export type MapStatePropsType = {
     isAuth: boolean
 }
 
-export type MapDispatchToPropsType = {
-    setUserDataActionCreator: (data:InitialStateType) => void
-    setAuthThunkCreator: ()=>void
-}
 
-class HeaderContainer extends React.Component<MapDispatchToPropsType & MapStatePropsType> {
 
-    componentDidMount() {
-       this.props.setAuthThunkCreator()
-    }
+class HeaderContainer extends React.Component<MapStatePropsType> {
 
     render() {
         return <Header isAuth={this.props.isAuth}
@@ -35,4 +28,4 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 
-export default compose<FC>(connect(mapStateToProps, {setUserDataActionCreator,setAuthThunkCreator}))(HeaderContainer)
+export default compose<FC>(connect(mapStateToProps, {logout}))(HeaderContainer)

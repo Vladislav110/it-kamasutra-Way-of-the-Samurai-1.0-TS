@@ -30,21 +30,9 @@ type PathParamType = {
 
 type CommonPropsType = RouteComponentProps<PathParamType> & OwnPropsType
 
-// function ProfileContainer(props: CommonPropsType) {
-//
-//     let userId = props.match.params.userId
-//     if (!userId) {
-//         userId = "27097"
-//     }
-//     props.getUserProfile(userId)
-//     props.getStatus(userId)
-//
-//     return (
-//         <Profile profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
-//     )
-// }
-
 function ProfileContainer(props: CommonPropsType) {
+
+
     let userId = props.match.params.userId;
     if (!userId) {
         userId = "27097";
@@ -59,7 +47,6 @@ function ProfileContainer(props: CommonPropsType) {
         <Profile profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
     );
 }
-
 
 
 let mapStateToProps = (state: AppStateType): MapStatePropsType => {

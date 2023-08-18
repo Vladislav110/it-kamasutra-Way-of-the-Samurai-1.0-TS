@@ -28,7 +28,7 @@ type ContactsPropsType = {
     mainLink: string
 }
 export type ProfilePropsType = {
-    userId: number
+    userId: string
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string

@@ -3,6 +3,7 @@ import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {reducer} from "./redux_store";
 import {Dispatch} from "redux";
 import {FormDataType} from "../components/Login/Login";
+import {stopSubmit} from "redux-form";
 
 
 const SET_USER_DATA = "SET_USER_DATA";
@@ -47,7 +48,7 @@ export const logoutActionCreator = (isAuth: boolean) => {
 
 export const setAuthThunkCreator = () => {
     return (dispatch: Dispatch<ActionsType>) => {
-        getAuth().then(response => {
+       return getAuth().then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(setUserDataActionCreator(response.data.data))
             }
@@ -72,7 +73,9 @@ export const login = (data: FormDataType): ThunkAction<void, ReturnType<typeof r
             if (response.data.resultCode === 0) {
                 dispatch(setAuthThunkCreator());
             } else {
-                console.log("Incorrect Email or Password")
+               const message = response.data.messages.length > 0 ? response.data.messages[0]:"Some Error"
+                let action: any = stopSubmit("login", {_error: message})
+                dispatch(action)
             }
         } catch (error) {
             console.log("Incorrect Email or Password")

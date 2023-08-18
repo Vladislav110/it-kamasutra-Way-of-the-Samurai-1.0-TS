@@ -11,6 +11,14 @@ import {compose} from "redux";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUserCount,
+    getUsersSelector
+} from "../../redux/users_selectors";
 
 
 export type MapStatePropsType = {
@@ -66,23 +74,23 @@ export class UsersContainer extends React.Component<MapDispatchToPropsType & Map
 
 let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        users: getUsersSelector(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUserCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state)
     }
 }
 
 const UserContainer = compose<FC>(
     withAuthRedirect,
     connect(mapStateToProps, {
-    setCurrentPage: setCurrentPageActionCreator,
-    getUsersThunk: getUsersThunkCreator,
-    follow: followThunkCreator,
-    unfollow: unfollowThunkCreator,
-    followingInProgress:setIsFollowingProgressActionCreator
-}))(UsersContainer)
+        setCurrentPage: setCurrentPageActionCreator,
+        getUsersThunk: getUsersThunkCreator,
+        follow: followThunkCreator,
+        unfollow: unfollowThunkCreator,
+        followingInProgress: setIsFollowingProgressActionCreator
+    }))(UsersContainer)
 
 export default UserContainer
