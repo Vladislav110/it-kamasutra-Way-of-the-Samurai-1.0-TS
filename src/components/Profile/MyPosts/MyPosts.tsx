@@ -28,24 +28,24 @@ const AddNewPostForm: React.FC<InjectedFormProps<FormNewPostType>> = (props) => 
 const AddNewPostFormRedux = reduxForm<FormNewPostType>({form: "newPostText"})(AddNewPostForm)
 
 
-export const MyPosts = (props: MyPostsPropsType) => {
+export const MyPosts = React.memo((props: MyPostsPropsType) => {
+        console.log("Render")
 
-    let postsElements = props.posts.map((p, index) => <Post key={index} message={p.message} likesCount={p.likesCount}/>)
+        let postsElements = props.posts.map((p, index) => <Post key={index} message={p.message} likesCount={p.likesCount}/>)
 
-    const onAddPost = (values: FormNewPostType) => {
-        props.addPost(values.newPostText)
-    }
+        const onAddPost = (values: FormNewPostType) => {
+            props.addPost(values.newPostText)
+        }
 
-    return (
-        <div className={s.postsBlock}>
-            <h3>My posts</h3>
-            <AddNewPostFormRedux onSubmit={onAddPost}/>
-            <div className={s.posts}>
-                {postsElements}
+        return (
+            <div className={s.postsBlock}>
+                <h3>My posts</h3>
+                <AddNewPostFormRedux onSubmit={onAddPost}/>
+                <div className={s.posts}>
+                    {postsElements}
+                </div>
             </div>
-        </div>
-    )
-}
-
-
+        )
+    }
+)
 
