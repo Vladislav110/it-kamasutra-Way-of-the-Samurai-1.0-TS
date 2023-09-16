@@ -42,7 +42,6 @@ let initialState = {
     isFetching: true,
     followingInProgress: false
 }
-console.log("users", initialState)
 
 export const usersReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
@@ -73,12 +72,14 @@ export const followActionCreator = (userID: string) => {
         userID: userID
     } as const
 }
+
 export const unfollowActionCreator = (userID: string) => {
     return {
         type: UNFOLLOW,
         userID: userID
     } as const
 }
+
 export const setUsersActionCreator = (users: Array<UserPropsType>) => {
     return {
         type: SET_USERS,
@@ -112,40 +113,37 @@ export const setIsFollowingProgressActionCreator = (followingInProgress: boolean
 
 
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return (dispatch: Dispatch<ActionsType>) => {
+    return async (dispatch: Dispatch<ActionsType>) => {
         dispatch(setIsFetchingActionCreator(true));
         dispatch(setCurrentPageActionCreator(currentPage))
 
-        getUsers(currentPage, pageSize)
-            .then(data => {
-                dispatch(setIsFetchingActionCreator(false))
-                dispatch(setUsersActionCreator(data.items))
-                dispatch(setTotalUsersCountActionCreator(data.totalCount))
-            })
+        let data = await getUsers(currentPage, pageSize);
+
+        dispatch(setIsFetchingActionCreator(false))
+        dispatch(setUsersActionCreator(data.items))
+        dispatch(setTotalUsersCountActionCreator(data.totalCount))
     }
 }
 
 export const followThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
+    return async (dispatch: Dispatch<ActionsType>) => {
         dispatch(setIsFollowingProgressActionCreator(true))
-        follow(userID)
-            .then(response => {
-                if (response.data.resultCode == 0) {
-                    dispatch(followActionCreator(userID))
-                }
-                dispatch(setIsFollowingProgressActionCreator(false))
-            })
+        let response = await follow(userID);
+
+        if (response.data.resultCode == 0) {
+            dispatch(followActionCreator(userID))
+        }
+        dispatch(setIsFollowingProgressActionCreator(false))
     }
 }
+
 export const unfollowThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
+    return async (dispatch: Dispatch<ActionsType>) => {
         dispatch(setIsFollowingProgressActionCreator(true))
-        unfollow(userID)
-            .then(response => {
-                if (response.data.resultCode == 0) {
-                    dispatch(unfollowActionCreator(userID))
-                }
-                dispatch(setIsFollowingProgressActionCreator(false))
-            })
+        let response = await unfollow(userID);
+        if (response.data.resultCode == 0) {
+            dispatch(unfollowActionCreator(userID))
+        }
+        dispatch(setIsFollowingProgressActionCreator(false))
     }
 }

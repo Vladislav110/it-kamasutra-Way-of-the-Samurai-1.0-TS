@@ -49,10 +49,11 @@ export class UsersContainer extends React.Component<MapDispatchToPropsType & Map
 
     componentDidMount() {
         this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
+
     }
 
-    onPageChanged = (pageNumber: number) => {
-        this.props.getUsersThunk(pageNumber, this.props.pageSize)
+    onPageChanged = (currentPage: number) => {
+        this.props.getUsersThunk(currentPage, this.props.pageSize)
     }
 
     render() {

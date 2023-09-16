@@ -46,13 +46,10 @@ export const logoutActionCreator = (isAuth: boolean) => {
 }
 
 
-export const setAuthThunkCreator = () => {
-    return (dispatch: Dispatch<ActionsType>) => {
-       return getAuth().then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setUserDataActionCreator(response.data.data))
-            }
-        })
+export const setAuthThunkCreator = () => async (dispatch: Dispatch<ActionsType>) => {
+    const response = await getAuth();
+    if (response.data.resultCode === 0) {
+        dispatch(setUserDataActionCreator(response.data.data))
     }
 }
 
@@ -73,7 +70,7 @@ export const login = (data: FormDataType): ThunkAction<void, ReturnType<typeof r
             if (response.data.resultCode === 0) {
                 dispatch(setAuthThunkCreator());
             } else {
-               const message = response.data.messages.length > 0 ? response.data.messages[0]:"Some Error"
+                const message = response.data.messages.length > 0 ? response.data.messages[0] : "Some Error"
                 let action: any = stopSubmit("login", {_error: message})
                 dispatch(action)
             }
@@ -83,13 +80,10 @@ export const login = (data: FormDataType): ThunkAction<void, ReturnType<typeof r
     };
 }
 
-export const logout = () => {
-    return (dispatch: ThunkDispatch<ReturnType<typeof reducer>, unknown, ActionsType>) => {
-        logoutUser().then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(logoutActionCreator(false))
-            }
-        })
+export const logout = () => async (dispatch: ThunkDispatch<ReturnType<typeof reducer>, unknown, ActionsType>) => {
+    let response = await logoutUser();
+    if (response.data.resultCode === 0) {
+        dispatch(logoutActionCreator(false))
     }
 }
 

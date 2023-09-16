@@ -93,28 +93,20 @@ export const setStatusActionCreator = (status: string) => {
 }
 
 
-export const getProfileThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
-        getProfile(userID).then(response => {
-            dispatch(setUserProfile(response.data))
-        })
-    }
+export const getProfileThunkCreator = (userID: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await getProfile(userID);
+    dispatch(setUserProfile(response.data))
 }
 
-export const getStatusThunkCreator = (userID: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
-        getStatus(userID).then(response => {
-            dispatch(setStatusActionCreator(response.data))
-        })
-    }
+
+export const getStatusThunkCreator = (userID: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await getStatus(userID);
+    dispatch(setStatusActionCreator(response.data))
 }
 
-export const updateStatusThunkCreator = (status: string) => {
-    return (dispatch: Dispatch<ActionsType>) => {
-        updateStatus(status).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setStatusActionCreator(status))
-            }
-        })
+export const updateStatusThunkCreator = (status: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await updateStatus(status);
+    if (response.data.resultCode === 0) {
+        dispatch(setStatusActionCreator(status))
     }
 }

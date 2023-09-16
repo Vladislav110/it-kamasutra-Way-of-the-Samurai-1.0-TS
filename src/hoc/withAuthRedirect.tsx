@@ -1,4 +1,4 @@
-import React, {ComponentType, FC, ReactNode} from 'react';
+import React, {FC} from 'react';
 import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import {AppStateType} from "../redux/redux_store";
@@ -28,3 +28,4 @@ export function withAuthRedirect<T>(Component: FC<T>)  {
     let ConnectAuthRedirectComponent  =  connect(mapStateToProps)(AuthRedirectComponent)
     return ConnectAuthRedirectComponent
 };
+

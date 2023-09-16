@@ -1,5 +1,4 @@
 import axios from "axios";
-import {InitialStateType} from "../redux/auth_reducer";
 import {FormDataType} from "../components/Login/Login";
 
 
