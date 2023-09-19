@@ -15,7 +15,6 @@ export type FormDataType = {
     rememberMe: boolean
 }
 
-
 const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return (
         <>
