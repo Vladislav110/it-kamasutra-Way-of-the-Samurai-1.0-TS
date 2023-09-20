@@ -57,6 +57,19 @@ export const updateStatus = (status: string) => {
     })
 }
 
+export const savePhoto = (photo: string) => {
+    let formData = new FormData()
+    formData.append("image", photo)
+
+    return axios.put(`https://social-network.samuraijs.com/api/1.0/profile/photo`, formData, {
+        withCredentials: true,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+}
+
+
 
 export const getAuth = () => {
     return axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {

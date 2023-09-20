@@ -1,19 +1,21 @@
 import {v1} from "uuid";
 import {Dispatch} from "redux";
-import {getProfile, getStatus, updateStatus} from "../api/api";
+import {getProfile, getStatus, savePhoto, updateStatus} from "../api/api";
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_STATUS = "SET_STATUS";
+const SET_PHOTO = "SET_PHOTO";
 
 
 type ActionsType =
     ReturnType<typeof addPostActionCreator>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatusActionCreator>
+    | ReturnType<typeof setPhotoActionCreator>
 
 
-type PhotosType = {
+export type PhotoType = {
     small: string
     large: string
 }
@@ -33,7 +35,7 @@ export type ProfilePropsType = {
     lookingForAJobDescription: string
     fullName: string
     contacts: ContactsPropsType
-    photos: PhotosType
+    photos: PhotoType
 }
 export type PostsPropsType = {
     id: string,
@@ -65,6 +67,8 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             return {...state, profile: action.profile}
         case SET_STATUS:
             return {...state, status: action.status}
+        case SET_PHOTO:
+            return {...state, profile: {...state.profile, photos:action.photo}}
         default:
             return state
     }
@@ -92,6 +96,13 @@ export const setStatusActionCreator = (status: string) => {
     } as const
 }
 
+export const setPhotoActionCreator = (photo: PhotoType) => {
+    return {
+        type: SET_PHOTO,
+        photo: photo
+    } as const
+}
+
 
 export const getProfileThunkCreator = (userID: string) => async (dispatch: Dispatch<ActionsType>) => {
     let response = await getProfile(userID);
@@ -108,5 +119,12 @@ export const updateStatusThunkCreator = (status: string) => async (dispatch: Dis
     let response = await updateStatus(status);
     if (response.data.resultCode === 0) {
         dispatch(setStatusActionCreator(status))
+    }
+}
+
+export const savePhotoThunkCreator = (photo: string) => async (dispatch: Dispatch<ActionsType>) => {
+    let response = await savePhoto(photo);
+    if (response.data.resultCode === 0) {
+        dispatch(setPhotoActionCreator(response.data.photos))
     }
 }
