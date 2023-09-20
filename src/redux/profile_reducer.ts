@@ -125,6 +125,6 @@ export const updateStatusThunkCreator = (status: string) => async (dispatch: Dis
 export const savePhotoThunkCreator = (photo: string) => async (dispatch: Dispatch<ActionsType>) => {
     let response = await savePhoto(photo);
     if (response.data.resultCode === 0) {
-        dispatch(setPhotoActionCreator(response.data.photos))
+        dispatch(setPhotoActionCreator(response.data.data.photos))
     }
 }
