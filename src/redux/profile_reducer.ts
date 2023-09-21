@@ -1,6 +1,7 @@
 import {v1} from "uuid";
 import {Dispatch} from "redux";
-import {getProfile, getStatus, savePhoto, updateStatus} from "../api/api";
+import {getProfile, getStatus, savePhoto, saveProfileInfo, updateStatus} from "../api/api";
+import {AppStateType} from "../redux/redux_store";
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
@@ -13,26 +14,29 @@ type ActionsType =
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatusActionCreator>
     | ReturnType<typeof setPhotoActionCreator>
+    | ReturnType<typeof setPhotoActionCreator>
 
 
 export type PhotoType = {
     small: string
     large: string
 }
-type ContactsPropsType = {
-    github: string
-    vk: string
-    facebook: string
-    instagram: string
-    twitter: string
-    website: string
-    youtube: string
-    mainLink: string
+export type ContactsPropsType = {
+    github?: string
+    vk?: string
+    facebook?: string
+    instagram?: string
+    twitter?: string
+    website?: string
+    youtube?: string
+    mainLink?: string
+    [key: string]: string | undefined;
 }
 export type ProfilePropsType = {
     userId: string
     lookingForAJob: boolean
     lookingForAJobDescription: string
+    aboutMe:string
     fullName: string
     contacts: ContactsPropsType
     photos: PhotoType
@@ -103,7 +107,6 @@ export const setPhotoActionCreator = (photo: PhotoType) => {
     } as const
 }
 
-
 export const getProfileThunkCreator = (userID: string) => async (dispatch: Dispatch<ActionsType>) => {
     let response = await getProfile(userID);
     dispatch(setUserProfile(response.data))
@@ -126,5 +129,17 @@ export const savePhotoThunkCreator = (photo: string) => async (dispatch: Dispatc
     let response = await savePhoto(photo);
     if (response.data.resultCode === 0) {
         dispatch(setPhotoActionCreator(response.data.data.photos))
+    }
+}
+
+
+export const saveProfileInfoThunkCreator = (profile: ProfilePropsType) => async (dispatch: Dispatch<any>, getState: () => AppStateType) => {
+    const userId = getState().auth.userId;
+    console.log(getState().profilePage)
+    let response = await saveProfileInfo(profile);
+    if (response.data.resultCode === 0) {
+        if(userId !== null){
+            dispatch(getProfileThunkCreator(userId));
+        }
     }
 }

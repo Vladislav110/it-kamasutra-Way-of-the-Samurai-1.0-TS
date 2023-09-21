@@ -53,16 +53,6 @@ export const setAuthThunkCreator = () => async (dispatch: Dispatch<ActionsType>)
     }
 }
 
-// export const login = (data: FormDataType) => {
-//     return (dispatch: ThunkDispatch<ReturnType<typeof reducer>, unknown, ActionsType>) => {
-//         loginUser(data).then(response => {
-//             if (response.data.resultCode === 0) {
-//                 dispatch(setAuthThunkCreator())
-//             }
-//         })
-//     }
-// }
-
 export const login = (data: FormDataType): ThunkAction<void, ReturnType<typeof reducer>, unknown, ActionsType> => {
     return async (dispatch: ThunkDispatch<ReturnType<typeof reducer>, unknown, ActionsType>) => {
         try {

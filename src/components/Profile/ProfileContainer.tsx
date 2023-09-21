@@ -5,12 +5,13 @@ import {AppStateType} from "../../redux/redux_store";
 import {
     getProfileThunkCreator,
     getStatusThunkCreator, PhotoType,
-    ProfilePropsType, savePhotoThunkCreator,
+    ProfilePropsType, savePhotoThunkCreator, saveProfileInfoThunkCreator,
     updateStatusThunkCreator
 } from "../../redux/profile_reducer";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {FormType} from "./ProfileInfo/ProfileDataForm";
 
 
 export type MapStatePropsType = {
@@ -22,6 +23,7 @@ export type MapDispatchToPropsType = {
     getStatus: (userId: string) => void
     updateStatus: (status: string) => void
     savePhoto: (photo:PhotoType)=>void
+    saveProfile: (profile:FormType)=>void
 }
 export type OwnPropsType = MapStatePropsType & MapDispatchToPropsType
 
@@ -50,6 +52,7 @@ function ProfileContainer(props: CommonPropsType) {
                  status={props.status}
                  updateStatus={props.updateStatus}
                  savePhoto ={props.savePhoto}
+                 saveProfile = {props.saveProfile}
         />
     );
 }
@@ -67,7 +70,8 @@ export default compose<React.FC>(
         getUserProfile: getProfileThunkCreator,
         getStatus: getStatusThunkCreator,
         updateStatus: updateStatusThunkCreator,
-        savePhoto: savePhotoThunkCreator
+        savePhoto: savePhotoThunkCreator,
+        saveProfile: saveProfileInfoThunkCreator
     }),
     withRouter,
     withAuthRedirect
