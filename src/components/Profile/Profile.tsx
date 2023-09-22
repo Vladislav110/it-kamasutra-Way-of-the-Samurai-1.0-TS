@@ -3,7 +3,7 @@ import s from "./Profile.module.css";
 import {ProfileInfo} from "./ProfileInfo/RrofileInfo";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import {PhotoType, ProfilePropsType} from "../../redux/profile_reducer";
-import {FormType} from "./ProfileInfo/ProfileDataForm";
+
 
 
 
@@ -13,7 +13,7 @@ type ProfilesPropsType = {
     status:string
     updateStatus:(status:string)=>void
     savePhoto: (photo:PhotoType)=>void
-    saveProfile: (profile:FormType)=>void
+    saveProfile: (profile:ProfilePropsType)=>void
 }
 
 export const Profile = (props:ProfilesPropsType) => {

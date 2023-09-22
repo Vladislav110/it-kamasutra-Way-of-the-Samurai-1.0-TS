@@ -1,7 +1,8 @@
 import {v1} from "uuid";
 import {Dispatch} from "redux";
 import {getProfile, getStatus, savePhoto, saveProfileInfo, updateStatus} from "../api/api";
-import {AppStateType} from "../redux/redux_store";
+import {stopSubmit} from "redux-form";
+
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
@@ -36,7 +37,7 @@ export type ProfilePropsType = {
     userId: string
     lookingForAJob: boolean
     lookingForAJobDescription: string
-    aboutMe:string
+    aboutMe: string
     fullName: string
     contacts: ContactsPropsType
     photos: PhotoType
@@ -72,7 +73,7 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         case SET_STATUS:
             return {...state, status: action.status}
         case SET_PHOTO:
-            return {...state, profile: {...state.profile, photos:action.photo}}
+            return {...state, profile: {...state.profile, photos: action.photo}}
         default:
             return state
     }
@@ -133,13 +134,13 @@ export const savePhotoThunkCreator = (photo: string) => async (dispatch: Dispatc
 }
 
 
-export const saveProfileInfoThunkCreator = (profile: ProfilePropsType) => async (dispatch: Dispatch<any>, getState: () => AppStateType) => {
-    const userId = getState().auth.userId;
-    console.log(getState().profilePage)
+export const saveProfileInfoThunkCreator = (profile: ProfilePropsType) => async (dispatch: Dispatch<any>) => {
     let response = await saveProfileInfo(profile);
     if (response.data.resultCode === 0) {
-        if(userId !== null){
-            dispatch(getProfileThunkCreator(userId));
-        }
+        dispatch(getProfileThunkCreator("27097"))
+    } else {
+        dispatch(stopSubmit('edit-profile', {"contacts": {error: response.data.messages[0]}}))
+        return Promise.reject()
     }
 }
+

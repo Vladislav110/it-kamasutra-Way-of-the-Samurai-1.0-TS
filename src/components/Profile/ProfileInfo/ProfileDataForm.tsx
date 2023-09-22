@@ -1,23 +1,31 @@
 import React from "react";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input, Textarea} from ".././../common/FormsControls/FormsControls";
-import {Contact} from "./RrofileInfo";
+import s from "./ProfileInfo.module.css"
+import {useSelector} from "react-redux";
+import {AppStateType} from "../../../redux/redux_store";
+import style from "../../../components/common/FormsControls/FormsControls.module.css";
+import {ContactsPropsType} from "../../../redux/profile_reducer";
 
 
-export type FormType = {
-    profile: any
-    fullName: string
-    lookingForAJob: boolean
-    lookingForAJobDescription: string
-    aboutMe: string
+export type FormData = {
+    fullName: string;
+    lookingForAJob: boolean;
+    lookingForAJobDescription: string;
+    aboutMe: string;
+    contacts: ContactsPropsType
 }
 
 
-export const ProfileDataForm: React.FC<InjectedFormProps<FormType>> = (props) => {
-    return <form onSubmit={props.handleSubmit}>
+export const ProfileDataForm: React.FC<InjectedFormProps<FormData>> = ({handleSubmit, error}) => {
+    const contacts = useSelector((state: AppStateType) => state.profilePage.profile.contacts);
+
+    return <form onSubmit={handleSubmit}>
         <div>
             <button>save</button>
         </div>
+        {error && <div className={style.formSummaryError}>{error}</div>}
+
         <div>
             <b>Full name</b>: <Field placeholder={"Full name"} name={"fullName"} component={Input} validate={[]}/>
         </div>
@@ -33,17 +41,20 @@ export const ProfileDataForm: React.FC<InjectedFormProps<FormType>> = (props) =>
 
         <div><b>About me</b>: <Field type={"textarea"} placeholder={"About me"} name={"aboutMe"}
                                      component={Textarea} validate={[]}/>
-
         </div>
 
-        {/*<div><b>Contacts</b>:{props.initialValues.profile.contacts && Object.keys(props.initialValues.profile.contacts).map((key) => {*/}
-        {/*    return <Contact key={key} contactTitle={key} contactValue={props.initialValues.profile.contacts[key]}/>*/}
-        {/*})}</div>*/}
+        <div><b>Contacts</b>:{contacts && Object.keys(contacts).map((key) => {
+            return <div key={key} className={s.contact}>
+                <b> {key}: <Field placeholder={key} name={"contacts." + key}
+                                  component={Input} validate={[]}/></b>
+            </div>
+
+        })}</div>
     </form>
 }
 
 
- const ProfileDataFormReduxForm = reduxForm<FormType>({form: "edit-profile"})(ProfileDataForm)
+const ProfileDataFormReduxForm = reduxForm<FormData>({form: "edit-profile"})(ProfileDataForm)
 
 export default ProfileDataFormReduxForm
 

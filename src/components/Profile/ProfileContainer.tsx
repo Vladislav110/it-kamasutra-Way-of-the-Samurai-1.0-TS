@@ -11,7 +11,7 @@ import {
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
-import {FormType} from "./ProfileInfo/ProfileDataForm";
+
 
 
 export type MapStatePropsType = {
@@ -23,7 +23,7 @@ export type MapDispatchToPropsType = {
     getStatus: (userId: string) => void
     updateStatus: (status: string) => void
     savePhoto: (photo:PhotoType)=>void
-    saveProfile: (profile:FormType)=>void
+    saveProfile: (profile:ProfilePropsType)=>void
 }
 export type OwnPropsType = MapStatePropsType & MapDispatchToPropsType
 
