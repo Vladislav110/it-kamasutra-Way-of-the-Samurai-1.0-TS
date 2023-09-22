@@ -139,7 +139,8 @@ export const saveProfileInfoThunkCreator = (profile: ProfilePropsType) => async 
     if (response.data.resultCode === 0) {
         dispatch(getProfileThunkCreator("27097"))
     } else {
-        dispatch(stopSubmit('edit-profile', {"contacts": {error: response.data.messages[0]}}))
+        let action: any = stopSubmit('edit-profile', {"contacts": {error: response.data.messages[0]}})
+        dispatch(action)
         return Promise.reject()
     }
 }
