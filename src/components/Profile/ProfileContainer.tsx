@@ -12,19 +12,19 @@ import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
-
-
 export type MapStatePropsType = {
     profile: ProfilePropsType
     status: string
 }
+
 export type MapDispatchToPropsType = {
     getUserProfile: (userId: string) => void
     getStatus: (userId: string) => void
     updateStatus: (status: string) => void
-    savePhoto: (photo:PhotoType)=>void
-    saveProfile: (profile:ProfilePropsType)=>void
+    savePhoto: (photo: PhotoType) => void
+    saveProfile: (profile: ProfilePropsType) => void
 }
+
 export type OwnPropsType = MapStatePropsType & MapDispatchToPropsType
 
 type PathParamType = {
@@ -34,7 +34,6 @@ type PathParamType = {
 type CommonPropsType = RouteComponentProps<PathParamType> & OwnPropsType
 
 function ProfileContainer(props: CommonPropsType) {
-
 
     let userId = props.match.params.userId;
     if (!userId) {
@@ -51,12 +50,11 @@ function ProfileContainer(props: CommonPropsType) {
                  profile={props.profile}
                  status={props.status}
                  updateStatus={props.updateStatus}
-                 savePhoto ={props.savePhoto}
-                 saveProfile = {props.saveProfile}
+                 savePhoto={props.savePhoto}
+                 saveProfile={props.saveProfile}
         />
     );
 }
-
 
 let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {

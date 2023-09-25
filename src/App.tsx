@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import './App.css';
 import {Navbar} from "./components/Navbar/Navbar";
-import {Route, withRouter} from "react-router-dom";
+import {Redirect, Route, withRouter} from "react-router-dom";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UserContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
@@ -39,10 +39,12 @@ class App extends React.Component<AppType> {
                     <HeaderContainer/>
                     <Navbar/>
                     <div className='app-wrapper-content'>
+                        <Route path='/' render={() => <Redirect to={"/Profile"}/>}/>
                         <Route path='/Dialogs' render={() => <DialogsContainer/>}/>
                         <Route path='/Profile/:userId?' render={() => <ProfileContainer/>}/>
                         <Route path='/Users' render={() => <UserContainer/>}/>
                         <Route path='/Login' render={() => <Login/>}/>
+                        <Route path='*' render={() => <div> 404 NOT FOUND</div>}/>
                     </div>
                 </div>
             );
